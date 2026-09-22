@@ -1,0 +1,28 @@
+# AI / LLM
+langchain==1.4.0
+langchain-core==1.6.3
+langchain-google-genai==4.4.0
+google-genai==2.23.0
+
+# MCP
+mcp==1.30.0
+
+# Gmail API / Google OAuth
+google-api-python-client==2.200.0
+google-auth==2.58.0
+google-auth-httplib2==0.4.2
+google-auth-oauthlib==1.4.1
+
+# Configuration
+python-dotenv==1.2.3
+
+# API
+fastapi==0.141.1
+uvicorn==0.52.4
+
+# Data validation
+pydantic==2.13.5
+
+# Testing
+pytest==9.1.1
+pytest-asyncio==1.4.0

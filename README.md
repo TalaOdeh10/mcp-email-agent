@@ -2,13 +2,13 @@
 
 An AI-powered Gmail assistant built with **Model Context Protocol (MCP)**, **Google Gemini**, and **LangChain**.
 
-The project allows users to interact with their Gmail inbox using natural language. Instead of manually selecting tools, the AI agent understands the user's request and decides which Gmail tool to use.
+The project allows users to interact with their Gmail inbox using natural language. Instead of manually selecting tools, the AI agent interprets the user's request, selects the appropriate Gmail tool, executes it through the MCP architecture, and returns the results in a conversational format.
 
 For example:
 
 > "Find my unread emails about invoices"
 
-The agent understands the request, selects the appropriate Gmail tool, executes it through the MCP server, and returns the results in a conversational format.
+The agent interprets the request, selects the appropriate Gmail tool, executes it through the MCP server, and returns the results to the user.
 
 ---
 
@@ -17,16 +17,15 @@ The agent understands the request, selects the appropriate Gmail tool, executes 
 * 🤖 AI-powered email assistant
 * 🔌 Model Context Protocol (MCP) integration
 * 📧 Gmail API integration
-* 🔎 Search emails using natural language
-* 📬 List recent emails
+* 🔎 Natural-language email search
+* 📬 Retrieve recent emails
 * 📄 Retrieve individual emails
 * 🧠 Gemini-powered tool selection
-* 🛠️ MCP tools exposed dynamically to the AI agent
+* 🛠️ Dynamic MCP tool discovery
 * 🌐 FastAPI backend
 * 💬 Web frontend
-* 🧪 Automated tests
-* 🔐 OAuth authentication with Google
-* 🗂️ Conversation/memory components
+* 🔐 Google OAuth authentication
+* 🧩 Modular agent / client / server architecture
 
 ---
 
@@ -35,27 +34,27 @@ The agent understands the request, selects the appropriate Gmail tool, executes 
 The main architecture follows this flow:
 
 ```text
-                         ┌──────────────────┐
-                         │      User        │
-                         └────────┬─────────┘
-                                  │
-                           Natural Language
-                                  │
-                                  ▼
+                        ┌──────────────────┐
+                        │      User        │
+                        └────────┬─────────┘
+                                 │
+                          Natural Language
+                                 │
+                                 ▼
                     ┌─────────────────────────┐
-                    │      AI Agent           │
+                    │       AI Agent          │
                     │                         │
-                    │ Gemini + LangChain      │
+                    │   Gemini + LangChain   │
                     └────────────┬────────────┘
                                  │
-                         Tool Selection
+                           Tool Selection
                                  │
                                  ▼
                     ┌─────────────────────────┐
                     │       MCP Client        │
                     └────────────┬────────────┘
                                  │
-                         MCP Protocol
+                           MCP Protocol
                                  │
                                  ▼
                     ┌─────────────────────────┐
@@ -64,23 +63,21 @@ The main architecture follows this flow:
                     │      Gmail Tools        │
                     └────────────┬────────────┘
                                  │
-                            Gmail API
+                              Gmail API
                                  │
                                  ▼
                     ┌─────────────────────────┐
-                    │      Google Gmail       │
+                    │       Google Gmail      │
                     └─────────────────────────┘
 ```
 
 ### Why MCP?
 
-Instead of tightly coupling the AI agent directly to Gmail functionality, the project separates the **AI reasoning layer** from the **tool layer**.
+Instead of tightly coupling the AI agent directly to Gmail functionality, the project separates the **AI reasoning layer** from the **tool execution layer**.
 
-The MCP server exposes Gmail capabilities as tools.
+The MCP server exposes Gmail capabilities as tools, while the AI agent discovers these tools and decides when to use them.
 
-The AI agent discovers these tools and decides when to use them.
-
-This makes the system easier to extend with additional tools or services later.
+This architecture makes it easier to extend the system with additional tools and external services without tightly coupling them to the agent.
 
 ---
 
@@ -88,14 +85,14 @@ This makes the system easier to extend with additional tools or services later.
 
 The MCP server currently exposes the following tools:
 
-| Tool            | Description                  |
-| --------------- | ---------------------------- |
-| `hello`         | Simple MCP connectivity test |
-| `list_emails`   | Retrieve recent emails       |
-| `search_emails` | Search Gmail using a query   |
-| `get_email`     | Retrieve a specific email    |
+| Tool            | Description                      |
+| --------------- | -------------------------------- |
+| `hello`         | Simple MCP connectivity test     |
+| `list_emails`   | Retrieve recent emails           |
+| `search_emails` | Search Gmail using a Gmail query |
+| `get_email`     | Retrieve a specific email        |
 
-The AI agent can select these tools based on the user's request.
+The AI agent can select these tools based on the user's natural-language request.
 
 ### Example
 
@@ -153,10 +150,6 @@ The MCP server executes the tool and returns the results to the agent.
 * CSS
 * JavaScript
 
-### Testing
-
-* Pytest
-
 ---
 
 ## 📁 Project Structure
@@ -165,9 +158,7 @@ The MCP server executes the tool and returns the results to the agent.
 mcp-email-agent/
 │
 ├── agent/
-│   ├── main.py
-│   ├── memory.py
-│   └── prompts.py
+│   └── main.py
 │
 ├── api/
 │   └── main.py
@@ -184,9 +175,6 @@ mcp-email-agent/
 │   ├── auth/
 │   │   └── gmail_auth.py
 │   │
-│   ├── models/
-│   │   └── email_models.py
-│   │
 │   ├── services/
 │   │   └── gmail_service.py
 │   │
@@ -195,16 +183,14 @@ mcp-email-agent/
 │   │
 │   └── main.py
 │
-├── tests/
-│   ├── test_confirmation.py
-│   └── test_email_tools.py
-│
 ├── .env.example
 ├── .gitignore
 ├── DECISIONS.md
 ├── requirements.txt
 └── README.md
 ```
+
+Sensitive authentication files such as `credentials.json` and `token.json` are stored locally and excluded from Git.
 
 ---
 
@@ -241,13 +227,13 @@ pip install -r requirements.txt
 
 ## 🔐 Google Gmail API Setup
 
-This project uses Google OAuth to access Gmail.
+This project uses Google OAuth 2.0 to access Gmail.
 
 ### 1. Create a Google Cloud project
 
 Create or select a project in Google Cloud Console.
 
-Enable the:
+Enable:
 
 ```text
 Gmail API
@@ -257,10 +243,16 @@ Gmail API
 
 Create OAuth client credentials for a desktop application.
 
-Download the credentials file and place it here:
+Download the credentials file and place it locally at:
 
 ```text
 server/auth/credentials.json
+```
+
+The authentication flow generates:
+
+```text
+server/auth/token.json
 ```
 
 ### 3. Environment variables
@@ -312,11 +304,13 @@ You: Find my unread emails about invoices
 Agent is using: search_emails
 
 Arguments:
+
 {
     "query": "is:unread invoice"
 }
 
 Agent:
+
 I found several unread emails related to invoices.
 ```
 
@@ -342,18 +336,6 @@ AI Response
 
 ---
 
-## 🧪 Testing
-
-Run the test suite with:
-
-```bash
-pytest
-```
-
-The repository includes tests covering email-related functionality and confirmation behavior.
-
----
-
 ## 🔒 Security
 
 Sensitive authentication files are intentionally excluded from Git.
@@ -369,13 +351,15 @@ server/auth/token.json
 
 The `.gitignore` file is configured to prevent accidental commits of these files.
 
+The repository also avoids exposing real email content or personal Gmail data in examples and documentation.
+
 ---
 
 ## 🎯 Project Goals
 
-This project was built to explore how **AI agents can interact with external systems through Model Context Protocol**.
+This project explores how **AI agents can interact with external systems through Model Context Protocol**.
 
-The main learning goals were:
+The main goals were:
 
 * Understanding MCP architecture
 * Building an MCP server
@@ -394,15 +378,16 @@ The main learning goals were:
 Potential extensions include:
 
 * ✉️ Draft email generation
-* 📤 Send emails with confirmation
+* 📤 Send emails with user confirmation
 * 🏷️ Gmail label management
 * 📌 Email summarization
-* 🧵 Conversation/thread analysis
+* 🧵 Conversation and thread analysis
 * 🔎 More advanced Gmail search
-* 🧠 Improved conversational memory
+* 🧠 Conversation memory
 * 🌐 Complete web-based chat interface
 * 🔐 More granular tool permissions
 * 📊 Email analytics
+* 🧪 Automated test coverage
 
 ---
 
@@ -416,11 +401,11 @@ Understanding how an LLM can interpret a user's request and select an appropriat
 
 ### Model Context Protocol
 
-Learning how MCP provides a standardized way for AI applications to discover and use external tools.
+Learning how MCP provides a standardized architecture for AI applications to discover and use external tools.
 
 ### Tool Calling
 
-Connecting natural-language requests to structured Python functions.
+Connecting natural-language requests to structured Python functions and tool arguments.
 
 ### API Integration
 
@@ -441,6 +426,8 @@ Services
   ↓
 External API
 ```
+
+This separation provides a foundation for extending the agent with additional tools and services.
 
 ---
 
@@ -464,4 +451,4 @@ Interested in:
 
 ## ⭐ Acknowledgment
 
-This project was developed as a hands-on learning project to explore **MCP, AI agents, tool calling, and real-world API integration**.
+This project was developed as a hands-on engineering project to explore **MCP, AI agents, tool calling, and real-world API integration**.
