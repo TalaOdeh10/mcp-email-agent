@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from agent.main import EmailAgent
@@ -6,6 +8,19 @@ from agent.main import EmailAgent
 
 app = FastAPI(
     title="MCP Email AI Agent"
+)
+
+
+# ============================================================
+# CORS
+# ============================================================
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -46,18 +61,6 @@ async def shutdown():
 
 
 # ============================================================
-# Root
-# ============================================================
-
-@app.get("/")
-async def root():
-
-    return {
-        "message": "MCP Email AI Agent API is running"
-    }
-
-
-# ============================================================
 # Chat
 # ============================================================
 
@@ -71,3 +74,17 @@ async def chat(request: ChatRequest):
     return {
         "response": response
     }
+
+
+# ============================================================
+# Frontend
+# ============================================================
+
+app.mount(
+    "/",
+    StaticFiles(
+        directory="frontend",
+        html=True
+    ),
+    name="frontend"
+)
