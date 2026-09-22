@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Email Assistant</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="app">
+
+
+        <!-- =========================
+             Sidebar
+        ========================== -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                📧
+                <span>Email AI</span>
+            </div>
+
+
+            <button
+                id="new-chat"
+                class="new-chat"
+            >
+                + New Chat
+            </button>
+
+
+            <div class="sidebar-info">
+
+                <p>Powered by</p>
+
+                <span>Gemini</span>
+                <span>MCP</span>
+                <span>Gmail API</span>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================
+             Main Chat
+        ========================== -->
+
+        <main class="chat">
+
+
+            <!-- Header -->
+
+            <header class="chat-header">
+
+                <div>
+
+                    <h1>AI Email Assistant</h1>
+
+                    <p>
+                        Search, understand and manage your Gmail
+                    </p>
+
+                </div>
+
+
+                <div class="status">
+
+                    <span class="status-dot"></span>
+
+                    Online
+
+                </div>
+
+            </header>
+
+
+            <!-- Messages -->
+
+            <section
+                id="messages"
+                class="messages"
+            >
+
+                <div class="welcome">
+
+                    <div class="welcome-icon">
+                        ✨
+                    </div>
+
+                    <h2>
+                        How can I help with your emails?
+                    </h2>
+
+                    <p>
+                        Ask me to find, summarize or understand
+                        your emails.
+                    </p>
+
+
+                    <div class="suggestions">
+
+                        <button class="suggestion">
+                            Find my latest emails
+                        </button>
+
+                        <button class="suggestion">
+                            Find emails from Fares
+                        </button>
+
+                        <button class="suggestion">
+                            Summarize my latest email
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Input -->
+
+            <form
+                id="chat-form"
+                class="input-area"
+            >
+
+                <input
+                    id="message-input"
+                    type="text"
+                    placeholder="Ask about your emails..."
+                    autocomplete="off"
+                >
+
+                <button
+                    id="send-button"
+                    type="submit"
+                >
+                    Send
+                </button>
+
+            </form>
+
+
+            <p class="footer-text">
+                AI Email Assistant can make mistakes.
+            </p>
+
+        </main>
+
+    </div>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

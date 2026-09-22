@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+
+# Gmail OAuth credentials
+server/auth/credentials.json
+server/auth/token.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Test / tooling cache
+.pytest_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
